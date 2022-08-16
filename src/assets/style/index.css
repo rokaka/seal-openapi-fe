@@ -1,0 +1,47 @@
+@tailwind base; /* Preflight will be injected here */
+
+@tailwind components;
+
+@tailwind utilities;
+
+.router-link-active {
+    color: #1a78ff;
+    border-bottom: 2px solid #1a78ff;
+}
+
+.v-docs {
+    flex: 1;
+}
+.markdown-body {
+    padding-left: 40px;
+    padding-bottom: 147px;
+    overflow-y: auto;
+    height: 100%;
+    padding-top: 2rem;
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+    border-bottom: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5 {
+    color: #2b323d;
+}
+
+/* 无序列表和有序列表 */
+.markdown-body ol {
+    list-style-type: decimal;
+}
+.markdown-body ul {
+    list-style-type: disc;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 0;
+}
