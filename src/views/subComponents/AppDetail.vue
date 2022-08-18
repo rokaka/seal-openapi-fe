@@ -90,7 +90,7 @@
         <wj-pagination
             :total="quotaTotal"
             @current-change="getQuota(...arguments, filterType, filterName)"
-            :page-size="5"
+            :page-size="10"
             class="mt-6 float-right"
             layout="prev, pager, next"
         ></wj-pagination>
@@ -205,7 +205,7 @@ export default {
             const { app_id } = this.appDetail
             try {
                 const res = await fetchAlgorithmQuotao(app_id, {
-                    size: 5,
+                    size: 10,
                     current: pageNum - 1, //the current is base on 0
                     algorithm_type,
                     algorithm_name,
