@@ -10,8 +10,23 @@
             >创建应用</wj-button
         >
         <wj-dialog :visible.sync="visible" title="新建应用" width="380px">
-            <wj-form :model="newAppForm" @submit.native.prevent inline>
-                <wj-form-item prop="appName" label="应用名称">
+            <wj-form
+                :model="newAppForm"
+                @submit.native.prevent
+                inline
+                ref="newAppForm"
+            >
+                <wj-form-item
+                    prop="appName"
+                    label="应用名称"
+                    :rules="[
+                        {
+                            required: true,
+                            message: '请输入应用名称',
+                            trigger: 'blur',
+                        },
+                    ]"
+                >
                     <wj-input
                         placeholder="请输入"
                         v-model="newAppForm.appName"
@@ -30,6 +45,7 @@
 
 <script>
 import { Button, Input, Form, FormItem, Dialog } from "@wenjuan/ui"
+import { createApp } from "@/http/app"
 export default {
     data() {
         return {
@@ -48,7 +64,13 @@ export default {
     },
     methods: {
         createApp() {
-            console.log("create app...")
+            this.$refs["newAppForm"].validate(async valid => {
+                if (valid) {
+                    await createApp(this.newAppForm.appName)
+                    this.$emit("refresh") // 通知更新列表
+                    this.visible = false
+                }
+            })
         },
     },
 }

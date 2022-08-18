@@ -3,7 +3,6 @@ import Vue from 'vue'
 
 export default {
     state: {
-        isLogin: false,
         MENU: [
             { name: "开放平台介绍", link: "ProfileMd" },
             { name: "签名规则", link: "RuleMd" },

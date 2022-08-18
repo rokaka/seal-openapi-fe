@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import DemoBlock from 'vue-dotmd-loader/dist/index.js'
-import { Image, Message } from '@wenjuan/ui'
+import { Image, Message, Loading } from '@wenjuan/ui'
 import '@wenjuan/ui/lib/theme-chalk/index.css';
 import 'github-markdown-css/github-markdown.css'
 import "@/assets/style/index.css"
@@ -14,6 +14,7 @@ Vue.prototype.$message = Message
 Vue.component('vueMdWrapper', DemoBlock)
 Vue.component('wj-image', Image)
 
+Vue.use(Loading.directive)
 
 new Vue({
   router,

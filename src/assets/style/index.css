@@ -45,3 +45,7 @@
 ::-webkit-scrollbar {
     width: 0;
 }
+
+.wj-loading-spinner i {
+    font-size: 26px;
+}

@@ -1,9 +1,11 @@
 const anchor = require("markdown-it-anchor")
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: '',
+                target: 'http://192.168.37.60:8001',
                 ws: false,
                 changeOrigin: true,
                 pathRewrite: {
@@ -16,7 +18,10 @@ module.exports = {
     configureWebpack: {
         resolve: {
             extensions: ['.md'],
-        }
+        },
+        plugins: [
+            // new BundleAnalyzerPlugin()
+        ]
     },
     chainWebpack(config) {
         config.module

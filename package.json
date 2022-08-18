@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build:test": "vue-cli-service build --mode test",
+    "build:prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -12,7 +13,6 @@
     "axios": "^0.27.2",
     "clipboard": "^2.0.11",
     "core-js": "^3.6.5",
-    "node-sass": "^7.0.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
@@ -26,16 +26,17 @@
     "@vue/cli-service": "~4.5.10",
     "autoprefixer": "^9",
     "babel-eslint": "^10.1.0",
-    "cssnano": "^5.1.12",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "markdown-it-anchor": "^8.6.4",
     "markdown-it-imsize": "^2.0.1",
-    "postcss": "^7",
+    "node-sass": "^7",
+    "postcss": "^8.1",
     "sass-loader": "10.x",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue-dotmd-loader": "^0.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": "^4.5.0"
   },
   "eslintConfig": {
     "root": true,

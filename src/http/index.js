@@ -25,41 +25,47 @@ if (process.env.NODE_ENV == 'development') {
 
 // 请求拦截器
 service.interceptors.request.use(
-    config => config,
+    config => {
+        const token = localStorage.getItem('auth_token')
+        config.headers['Authorization'] = token
+        return config
+    },
     error => Promise.reject(error)
 );
 // 响应拦截器
 service.interceptors.response.use(
     (response) => {
-        // config.headers['Authorization'] = 'token'
         let data = response.data;
         return data;
     },
     (error) => {
-        if (error.response.status == 401 && error.response.data.message === 'Unauthorized') {
-            error.message = '请先登录';
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 800);
+        if (error.response.status == 401 && error.response.data.code === 10002) {
+            if (localStorage.getItem('auth_token')) {
+                localStorage.removeItem('auth_token')
+            }
+            // setTimeout(() => {
+            //     window.location.href = '/';
+            // }, 800);
+
+            Message({
+                type: 'info',
+                message: '登录已过期，请重新登录'
+            })
         } else if (error && error.response && error.response.data) {
             error.message = error.response.data.message;
         }
 
-        error.message = error.message || 'error';
+        error.message = error.message || '网络有点小问题，请稍后再试';
+
         Message({
             message: `${error.message}`,
             duration: 2000,
-            offset: 70,
+            type: 'error'
         });
         return Promise.reject(error.response || error);
     }
 );
 
-// [注]put2中的data是body参数
-export default {
-    get: (url, data) => service({ method: 'get', url, params: data }),
-    post: (url, data, params, headers) => service({ method: 'post', url, data, params, headers }),
-    delete: (url, data) => service({ method: 'delete', url, data }),
-    put: (url, data) => service({ method: 'put', url, params: data }),
-    patch: (url, data, params, headers) => service({ method: 'patch', url, data, params, headers }),
-};
+export const get = (url, data) => service({ method: 'get', url, params: data });
+export const post = (url, data, params, headers) => service({ method: 'post', url, data, params, headers });
+export const put = (url, data) => service({ method: 'put', url, data })

@@ -24,9 +24,24 @@
                 >
             </div>
         </div>
-        <wj-button type="primary" class="bg-blue" @click="loginVisible = true"
+        <wj-button
+            type="primary"
+            v-if="!isLogin"
+            class="bg-blue"
+            @click="loginVisible = true"
             >登录</wj-button
         >
+
+        <wj-dropdown v-else>
+            <span class="wj-dropdown-link text-base">
+                {{ phone }}<i class="wj-icon-arrow-down wj-icon--right"></i>
+            </span>
+            <wj-dropdown-menu slot="dropdown">
+                <wj-dropdown-item>
+                    <span style="color: red" @click="logout">退出登录</span>
+                </wj-dropdown-item>
+            </wj-dropdown-menu>
+        </wj-dropdown>
 
         <wj-dialog
             :visible.sync="loginVisible"
@@ -91,8 +106,18 @@
 </template>
 
 <script>
-import { Button, Dialog, Form, FormItem, Checkbox, Input } from "@wenjuan/ui"
-
+import {
+    Button,
+    Dialog,
+    Form,
+    FormItem,
+    Checkbox,
+    Input,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+} from "@wenjuan/ui"
+import { sendCaptcha, authLogin } from "@/http/auth"
 export default {
     data() {
         return {
@@ -101,6 +126,7 @@ export default {
                 phone: "",
                 validateCode: "",
             },
+            captcha_key: "",
             accept: false, // 是否接受用户协议
             rules: {
                 phone: [{ required: true, message: "手机号不能为空" }],
@@ -110,17 +136,52 @@ export default {
             cooling: false, //验证码发送冷却
         }
     },
+    computed: {
+        isLogin() {
+            return localStorage.getItem("auth_token")
+        },
+        phone() {
+            return localStorage.getItem("user_phone")
+        },
+    },
     methods: {
         login() {
-            this.$refs["loginForm"].validate(valid => {
+            this.$refs["loginForm"].validate(async valid => {
                 if (valid) {
-                    alert("submit!")
-                } else {
-                    console.log("error submit!!")
-                    return false
+                    if (!this.accept) {
+                        this.$message({
+                            type: "info",
+                            message: "请先接受开发者协议及隐私政策",
+                        })
+                        return
+                    }
+
+                    const params = {
+                        telephone: this.form.phone,
+                        captcha_key: this.captcha_key,
+                        captcha_code: this.form.validateCode,
+                    }
+                    const {
+                        data: { authorization },
+                    } = await authLogin(params)
+
+                    authorization &&
+                        localStorage.setItem("auth_token", authorization)
+
+                    localStorage.setItem("user_phone", this.form.phone)
+
+                    this.$message({
+                        type: "success",
+                        message: "登录成功",
+                    })
+
+                    window.location.href = "/" // 登录跳转
                 }
             })
-            console.log("login...")
+        },
+        logout() {
+            localStorage.removeItem("auth_token")
+            window.location.href = "/"
         },
         lauchCountDown() {
             // 启动定时器
@@ -136,11 +197,22 @@ export default {
                 }, 1000)
             }
         },
-        sendCode() {
+        async sendCode() {
             // 发送验证码
-            this.$refs["loginForm"].validateField("phone", error => {
+            this.$refs["loginForm"].validateField("phone", async error => {
                 if (!error) {
                     this.lauchCountDown()
+
+                    const {
+                        data: { captcha_key },
+                    } = await sendCaptcha(this.form.phone)
+
+                    this.$message({
+                        type: "success",
+                        message: "验证码已发送，请查收",
+                    })
+
+                    this.captcha_key = captcha_key
                 }
             })
         },
@@ -152,6 +224,9 @@ export default {
         "wj-form-item": FormItem,
         "wj-checkbox": Checkbox,
         "wj-input": Input,
+        "wj-dropdown": Dropdown,
+        "wj-dropdown-menu": DropdownMenu,
+        "wj-dropdown-item": DropdownItem,
     },
 }
 </script>
