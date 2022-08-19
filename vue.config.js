@@ -2,6 +2,7 @@ const anchor = require("markdown-it-anchor")
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_CDN_PATH : '/',
     devServer: {
         proxy: {
             '/api': {
