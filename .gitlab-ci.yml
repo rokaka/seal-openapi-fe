@@ -1,0 +1,31 @@
+stages:
+  - build
+
+build-image:dev:
+  stage: build
+  image: cr.idiaoyan.cn/mirror/docker:19.03.12
+  tags:
+    - ops
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
+    - if: $CI_COMMIT_BRANCH == 'develop'
+  variables:
+    DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
+    DOCKER_HOST: tcp://localhost:2376
+    DOCKER_TLS_CERTDIR: /certs
+    DOCKER_TLS_VERIFY: 1
+  services:
+    - command:
+        - --registry-mirror
+        - https://pqbap4ya.mirror.aliyuncs.com
+      name: cr.idiaoyan.cn/mirror/docker:19.03.12-dind
+  before_script:
+    - echo ${DOCKER_REGISTRY_PASS} | docker login cr.idiaoyan.cn --username=${DOCKER_REGISTRY_USER} --password-stdin
+  script:
+    - echo $(TZ=Asia/Shanghai date '+%Y%m%d%H%M%S') > .version
+    - IMAGE=cr.idiaoyan.cn/sp/sp-openapi-fe:`cat .version`
+    - docker build -t $IMAGE .
+    - cat .version
+    - docker push $IMAGE
+    
+
