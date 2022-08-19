@@ -8,15 +8,18 @@ yarn serve
 
 ## 打包
 
-测试服：
-```
-yarn build:test
-```
 正式服：
 ```
 yarn build:prod
 ```
-
+uat
+```
+yarn build:uat
+```
+测试服：
+```
+yarn build:test
+```
 ## 样式
 
 样式用的`tailwindcss`框架处理。由于vue2.x的限制，当前使用的是较低版本的`tailwind`，相应的`postcss`和`autoprefixer`也都是较低版本。
