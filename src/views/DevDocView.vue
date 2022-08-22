@@ -8,6 +8,7 @@
 
 <script>
 import ProfileMd from "@/assets/md/profile.md"
+import SignToolMd from "@/assets/md/signTool.md"
 import RuleMd from "@/assets/md/rule.md"
 import SideNav from "./subComponents/SideNav.vue"
 import RightMenu from "./subComponents/RightMenu.vue"
@@ -20,6 +21,7 @@ export default {
         SideNav,
         RuleMd,
         RightMenu,
+        SignToolMd,
     },
     computed: {
         ...mapGetters(["menu", "flatMenu", "pageHeaders"]),

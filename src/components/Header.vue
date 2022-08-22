@@ -136,6 +136,15 @@ export default {
             cooling: false, //验证码发送冷却
         }
     },
+    watch: {
+        $route: {
+            handler(route) {
+                if (route.fullPath.includes("login")) {
+                    this.loginVisible = true
+                }
+            },
+        },
+    },
     computed: {
         isLogin() {
             return localStorage.getItem("auth_token")

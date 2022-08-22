@@ -41,16 +41,20 @@ service.interceptors.response.use(
     (error) => {
         if (error.response.status == 401 && error.response.data.code === 10002) {
             if (localStorage.getItem('auth_token')) {
+                error.message = '登录已过期，请重新登录'
                 localStorage.removeItem('auth_token')
-            }
-            // setTimeout(() => {
-            //     window.location.href = '/';
-            // }, 800);
+            } else {
+                error.message = '请登录'
 
+            }
             Message({
                 type: 'info',
-                message: '登录已过期，请重新登录'
+                message: error.message
             })
+            setTimeout(() => {
+                window.location.href += '?login'
+            }, 800)
+            return
         } else if (error && error.response && error.response.data) {
             error.message = error.response.data.message;
         }
@@ -58,7 +62,7 @@ service.interceptors.response.use(
         error.message = error.message || '网络有点小问题，请稍后再试';
 
         Message({
-            message: `${error.message}`,
+            message: `${error.data.message}`,
             duration: 2000,
             type: 'error'
         });

@@ -36,7 +36,9 @@ export default {
         AppDetail,
     },
     mounted() {
-        this.getAppList()
+        if (!this.$route.fullPath.includes("login")) {
+            this.getAppList()
+        }
     },
     methods: {
         async getAppList() {

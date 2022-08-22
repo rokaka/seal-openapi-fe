@@ -6,7 +6,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://192.168.37.60:8001',
+                target: 'http://openapi-dev.spsspro.com:30815',
                 ws: false,
                 changeOrigin: true,
                 pathRewrite: {

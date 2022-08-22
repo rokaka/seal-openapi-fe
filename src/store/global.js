@@ -6,7 +6,7 @@ export default {
         MENU: [
             { name: "开放平台介绍", link: "ProfileMd" },
             { name: "签名规则", link: "RuleMd" },
-            { name: "签名工具", link: "" },
+            { name: "签名工具", link: "SignToolMd" },
             { name: "频率限制", link: "" },
             { name: "错误代码", link: "" },
             { name: "主要参数说明", link: "" },
