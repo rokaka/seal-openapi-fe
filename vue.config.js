@@ -6,7 +6,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://192.168.37.60:8001',
+                target: 'http://openapi-dev.spsspro.com:30815',
                 ws: false,
                 changeOrigin: true,
                 pathRewrite: {
@@ -22,7 +22,12 @@ module.exports = {
         },
         plugins: [
             // new BundleAnalyzerPlugin()
-        ]
+        ],
+        externals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            vuex: 'Vuex',
+        }
     },
     chainWebpack(config) {
         config.module
@@ -53,6 +58,16 @@ module.exports = {
                 }
             })
             .end()
+
+        config.plugin('html')
+            .tap(args => {
+                args[0].cdn = [
+                    'https://s0.spsspro.com/lib/vue/2.6.11/vue.min.js',
+                    'https://s0.spsspro.com/lib/vue-router/3.5.2/vue-router.min.js',
+                    'https://s0.spsspro.com/lib/vuex/3.6.2/vuex.min.js',
+                ]
+                return args
+            })
         // console.log(config.module.rule('babel'))
     }
 }
