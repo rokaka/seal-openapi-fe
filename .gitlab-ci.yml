@@ -1,5 +1,6 @@
 stages:
   - build
+  - deploy
 
 build-image:dev:
   stage: build
@@ -27,5 +28,24 @@ build-image:dev:
     - docker build -t $IMAGE .
     - cat .version
     - docker push $IMAGE
+
+deploy:uat:
+  stage: deploy
+  image: cr.idiaoyan.cn/ops/nodejs:16.5.0-86625f25
+  tags:
+    - public-prod-01
+  only:
+    - develop
+  before_script:
+    - yum install gcc-c++ -y
+    - npm install --global yarn nrm
+    - nrm add idiaoyan http://mirrors.idiaoyan.cn/repository/npm-group/;nrm use idiaoyan
+  script:
+    - yarn install
+    - yarn run build:uat
+    - ossutil cp -rf dist/ oss://sp-web-uat-10001-oss/sp-openapifed -c /root/.ossutilconfig-sz
+
+    
+    
     
 
