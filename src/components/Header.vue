@@ -212,16 +212,23 @@ export default {
                 if (!error) {
                     this.lauchCountDown()
 
-                    const {
-                        data: { captcha_key },
-                    } = await sendCaptcha(this.form.phone)
+                    try {
+                        const {
+                            data: { captcha_key },
+                        } = await sendCaptcha(this.form.phone)
 
-                    this.$message({
-                        type: "success",
-                        message: "验证码已发送，请查收",
-                    })
+                        this.$message({
+                            type: "success",
+                            message: "验证码已发送，请查收",
+                        })
 
-                    this.captcha_key = captcha_key
+                        this.captcha_key = captcha_key
+                    } catch (error) {
+                        if (error.data && error.data.code === 20301) {
+                            this.countDown = error.data.data.retry_in
+                            this.cooling = true
+                        }
+                    }
                 }
             })
         },

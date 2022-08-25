@@ -45,7 +45,6 @@ service.interceptors.response.use(
                 localStorage.removeItem('auth_token')
             } else {
                 error.message = '请登录'
-
             }
             Message({
                 type: 'info',
@@ -62,7 +61,7 @@ service.interceptors.response.use(
         error.message = error.message || '网络有点小问题，请稍后再试';
 
         Message({
-            message: `${error.data.message}`,
+            message: `${error.message}`,
             duration: 2000,
             type: 'error'
         });
