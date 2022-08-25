@@ -35,7 +35,7 @@ deploy:uat:
   tags:
     - public-prod-01
   rules:
-    - if: '$CI_COMMIT_TAG'
+    - if: $CI_COMMIT_BRANCH =~ /^release.*/
   before_script:
     - yum install gcc-c++ -y
     - npm install --global yarn nrm
@@ -51,7 +51,7 @@ deploy:prod:
   tags:
     - public-prod-01
   rules:
-    - if: '$CI_COMMIT_TAG'
+    - if: $CI_COMMIT_BRANCH =~ /^release.*/
   when: manual
   before_script:
     - yum install gcc-c++ -y
