@@ -5,6 +5,7 @@ RUN yum install gcc-c++ -y
 RUN yum install -y centos-release-scl
 RUN yum install -y devtoolset-9-gcc*
 RUN scl enable devtoolset-9 bash
+RUN scl enable devtoolset-9 sh
 RUN npm i nrm -g;nrm add idiaoyan http://mirrors.idiaoyan.cn/repository/npm-group/;nrm use idiaoyan
 RUN npm install --global yarn
 RUN yarn install 
