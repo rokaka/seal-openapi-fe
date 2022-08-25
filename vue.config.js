@@ -66,8 +66,12 @@ module.exports = {
                     'https://s0.spsspro.com/lib/vue-router/3.5.2/vue-router.min.js',
                     'https://s0.spsspro.com/lib/vuex/3.6.2/vuex.min.js',
                 ]
+                args[0].title = 'API开放平台-SPSSPRO-免费专业的在线数据分析平台'
+                args[0].meta = {
+                    description: 'SPSSPRO API开放平台是关于数据分析工具软件的API开发接口介绍,介绍了各种接口的使用与权限。',
+                    keywords: 'spss、api、数据分析服务、机器学习、开发文档'
+                }
                 return args
             })
-        // console.log(config.module.rule('babel'))
     }
 }
