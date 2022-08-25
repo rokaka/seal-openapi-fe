@@ -1,4 +1,4 @@
-FROM cr.idiaoyan.cn/ops/nodejs:16.5.0-86625f25 as builder
+FROM cr.idiaoyan.cn/ops/nodejs:14.16.0-7373a927 as builder
 WORKDIR application
 COPY ./ ./
 RUN yum install gcc-c++ -y
