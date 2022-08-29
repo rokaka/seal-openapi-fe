@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import DevDoc from '@/views/DevDocView.vue'
-
+import Home from '@/views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -9,21 +8,34 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/dev_doc'
+    redirect: '/console',
+    component: Home,
+    children: [
+      {
+        path: 'dev_doc',
+        component: () => import('../views/DevDocView.vue'),
+      },
+      {
+        path: '/dev_doc/:docName',
+        name: 'DevDoc',
+        component: () => import('../views/DevDocView.vue'),
+      },
+      {
+        path: '/console',
+        name: 'Console',
+        component: () => import('../views/ConsoleView.vue')
+      },
+    ]
   },
   {
-    path: '/dev_doc',
-    component: DevDoc,
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('../components/Terms.vue')
   },
   {
-    path: '/dev_doc/:docName',
-    name: 'DevDoc',
-    component: DevDoc,
-  },
-  {
-    path: '/console',
-    name: 'Console',
-    component: () => import('../views/ConsoleView.vue')
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import('../components/Privacy.vue')
   }
 ]
 const router = new VueRouter({

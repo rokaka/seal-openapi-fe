@@ -29,6 +29,7 @@ export default {
             },
         ],
         pageHeaders: [],
+        loginVisible: false,
     },
     getters: {
         menu: state => {
@@ -50,11 +51,23 @@ export default {
         },
         pageHeaders: state => {
             return state.pageHeaders
+        },
+        loginVisible: state => {
+            return state.loginVisible
         }
     },
     mutations: {
         GET_PAGE_HEADERS(state) {
             state.pageHeaders = getPageHeaders()
+        },
+        OPEN_LOGIN_DIALOG(state) {
+            state.loginVisible = true
+        },
+        CLOSE_LOGIN_DIALOG(state) {
+            state.loginVisible = false
+        },
+        CHANGE_LOGIN_DIALOG(state, status) {
+            state.loginVisible = status
         }
     },
     actions: {
@@ -62,6 +75,15 @@ export default {
             Vue.nextTick(() => {
                 commit("GET_PAGE_HEADERS")
             })
+        },
+        openLoginDialog({ commit }) {
+            commit('OPEN_LOGIN_DIALOG')
+        },
+        closeLoginDialog({ commit }) {
+            commit('CLOSE_LOGIN_DIALOG')
+        },
+        changeLoginDialog({ commit }, status) {
+            commit('CHANGE_LOGIN_DIALOG', status)
         }
     }
 }

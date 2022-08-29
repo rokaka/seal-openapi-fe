@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Message } from '@wenjuan/ui'
-
+import store from '../store';
+const $message = Message
 const config = {
     headers: {
         post: {
@@ -44,23 +45,25 @@ service.interceptors.response.use(
                 error.message = '登录已过期，请重新登录'
                 localStorage.removeItem('auth_token')
             } else {
-                error.message = '请登录'
+                error.message = '请先登录'
             }
-            Message({
+
+            $message({
                 type: 'info',
                 message: error.message
             })
+
             setTimeout(() => {
-                window.location.href += '?login'
+                store.dispatch('openLoginDialog')
             }, 800)
-            return
+            return Promise.reject(error)
         } else if (error && error.response && error.response.data) {
             error.message = error.response.data.message;
         }
 
         error.message = error.message || '网络有点小问题，请稍后再试';
 
-        Message({
+        $message({
             message: `${error.message}`,
             duration: 2000,
             type: 'error'
