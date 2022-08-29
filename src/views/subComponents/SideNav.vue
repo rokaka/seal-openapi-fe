@@ -38,7 +38,45 @@
                         }"
                         @click="show(subMenuItem)"
                     >
-                        {{ subMenuItem.name }}
+                        <template v-if="subMenuItem.children">
+                            <span
+                                class="relative"
+                                @click="openGrandItem(subMenuItem.name)"
+                            >
+                                <i
+                                    class="wj-icon-caret-bottom absolute top-1/2 transform -translate-y-1/2 -left-5"
+                                    :class="{
+                                        '-rotate-90':
+                                            openGrandItemName !==
+                                            subMenuItem.name, // 展开的三级菜单名称
+                                    }"
+                                ></i>
+                                {{ subMenuItem.name }}
+                            </span>
+                            <ul
+                                class="ml-3 mt-2"
+                                :class="{
+                                    hidden:
+                                        openGrandItemName !== subMenuItem.name,
+                                }"
+                            >
+                                <li
+                                    v-for="(
+                                        grandMenuItem, grandIndex
+                                    ) in subMenuItem.children"
+                                    :key="`${subIndex}-${grandIndex}`"
+                                    :class="{
+                                        'text-blue':
+                                            grandMenuItem.name ===
+                                            $route.params.docName,
+                                    }"
+                                    @click="show(grandMenuItem)"
+                                >
+                                    {{ grandMenuItem.name }}
+                                </li>
+                            </ul>
+                        </template>
+                        <span v-else> {{ subMenuItem.name }}</span>
                     </li>
                 </ul>
             </template>
@@ -53,6 +91,7 @@ export default {
     data() {
         return {
             openSubItemName: "", //开启的二级菜单
+            openGrandItemName: "", // 开启的三级菜单
         }
     },
     computed: {
@@ -72,6 +111,9 @@ export default {
         },
         openSubItem(name) {
             this.openSubItemName = this.openSubItemName === name ? "" : name
+        },
+        openGrandItem(name) {
+            this.openGrandItemName = this.openGrandItemName === name ? "" : name
         },
     },
 }
