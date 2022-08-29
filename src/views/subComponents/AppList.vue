@@ -22,6 +22,12 @@
         <wj-dialog :visible.sync="visible" title="提示" width="420px" center>
             <div class="text-center">
                 <p>如需新增应用数，请联系商务经理</p>
+                <wj-image
+                    :src="require('@/assets/image/wu-enterprise-wechat.png')"
+                    class="w-20 h-20 mt-4"
+                >
+                </wj-image>
+                <p class="text-gray-500 mt-2">吴经理</p>
             </div>
             <div slot="footer">
                 <wj-button

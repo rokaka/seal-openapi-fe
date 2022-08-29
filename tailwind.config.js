@@ -15,12 +15,13 @@ module.exports = {
             transparent: 'transparent',
             current: 'currentColor',
             'blue': '#2672FF',
+            'gray-500': '#AAADB1',
             'gray': '#eef1f5',
             'text-gray': '#2b323d'
         },
-        fontFamily: {
-            sans: ['PingFangSC', 'PingFangSC-Regular'],
-        },
+        // fontFamily: {
+        //     sans: ['PingFangSC', 'PingFangSC-Regular', 'Hiragino Sans GB', 'HeitiSC', 'Helvetica', 'Arial', 'Microsoft YaHei', 'WenQuanYi Micro Hei', 'sans-serif'],
+        // },
     },
     plugins: [],
 }

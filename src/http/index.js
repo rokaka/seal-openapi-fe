@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Message } from '@wenjuan/ui'
-
+import store from '../store';
+const $message = Message
 const config = {
     headers: {
         post: {
@@ -17,6 +18,7 @@ const config = {
     responseType: 'json',
 }
 const service = axios.create(config);
+let lock = false // 避免重复提示
 
 if (process.env.NODE_ENV == 'development') {
     service.defaults.baseURL = '/api';
@@ -44,27 +46,29 @@ service.interceptors.response.use(
                 error.message = '登录已过期，请重新登录'
                 localStorage.removeItem('auth_token')
             } else {
-                error.message = '请登录'
+                error.message = '请先登录'
             }
-            Message({
-                type: 'info',
-                message: error.message
-            })
+
             setTimeout(() => {
-                window.location.href += '?login'
+                store.dispatch('openLoginDialog')
             }, 800)
-            return
         } else if (error && error.response && error.response.data) {
             error.message = error.response.data.message;
         }
 
         error.message = error.message || '网络有点小问题，请稍后再试';
+        if (!lock) {
+            lock = true
+            $message({
+                message: `${error.message}`,
+                duration: 2000,
+                type: 'info',
+                onClose: () => {
+                    lock = false
+                }
+            });
+        }
 
-        Message({
-            message: `${error.message}`,
-            duration: 2000,
-            type: 'error'
-        });
         return Promise.reject(error.response || error);
     }
 );

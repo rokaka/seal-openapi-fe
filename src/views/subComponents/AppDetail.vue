@@ -40,13 +40,17 @@
         </div>
         <h2 class="text-2xl font-bold mb-4 pt-8">版本权限</h2>
         <div class="text-sm text-text-gray">
-            <div class="mb-2">当前版本：{{ appDetail.edition }}</div>
+            <div class="mb-2">
+                当前版本：{{ VERSION_DICE[appDetail.edition] }}
+            </div>
 
             <div class="mb-2">
-                单日成功调用分析次数：{{ calls_today }} /
-                {{ max_calls_per_day }}
+                单日成功调用分析次数：{{ calls_today || 0 }} /
+                {{ max_calls_per_day || 0 }}
             </div>
-            <div class="mb-2">到期时间：{{ appDetail.edition_expire_at }}</div>
+            <div class="mb-2">
+                到期时间：{{ appDetail.edition_expire_at || "-" }}
+            </div>
         </div>
 
         <p class="flex items-center justify-between text-sm text-text-gray">
@@ -106,11 +110,15 @@
                 :model="renameForm"
             >
                 <wj-form-item
+                    prop="newName"
                     :rules="[
                         {
                             required: true,
                             message: '请输入应用名称',
                             trigger: 'blur',
+                        },
+                        {
+                            validator: validateAppName,
                         },
                     ]"
                 >
@@ -169,6 +177,11 @@ function data() {
         filterName: "",
         quotaTotal: 0,
         loading: false,
+        VERSION_DICE: {
+            NORMAL: "免费版",
+            ULTIMATE: "旗舰版",
+            SPECIAL: "特供版",
+        },
     }
 }
 
@@ -184,6 +197,13 @@ export default {
         this.clip.destroy() // 销毁copy示例
     },
     methods: {
+        validateAppName(rule, value, callback) {
+            if (/^[\u4E00-\u9FA5,a-zA-Z]+$/g.test(value)) {
+                callback()
+            } else {
+                callback(new Error("只允许填入中英文"))
+            }
+        },
         filterChange(val) {
             this.filterType = val.algorithm_type[0]
             this.getQuota(1, this.filterType, this.filterName)
@@ -224,9 +244,9 @@ export default {
                     const { newName } = this.renameForm
                     await renameApp(app_id, newName)
                     this.$emit("refresh")
+                    this.visible = false
                 }
             })
-            this.visible = false
         },
         initCopy() {
             this.clip = new Clipboard(".wj-icon-copy-document")
