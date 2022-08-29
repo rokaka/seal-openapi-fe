@@ -34,7 +34,7 @@
 
         <wj-dropdown v-else>
             <span class="wj-dropdown-link text-base">
-                {{ phone }}<i class="wj-icon-arrow-down wj-icon--right"></i>
+                {{ userphone }}<i class="wj-icon-arrow-down wj-icon--right"></i>
             </span>
             <wj-dropdown-menu slot="dropdown">
                 <wj-dropdown-item>
@@ -169,7 +169,7 @@ export default {
         phone() {
             return localStorage.getItem("user_phone")
         },
-        ...mapGetters(["loginVisible"]),
+        ...mapGetters(["loginVisible", "userphone"]),
     },
     methods: {
         ...mapActions([
@@ -205,8 +205,6 @@ export default {
 
                     authorization &&
                         localStorage.setItem("auth_token", authorization)
-
-                    localStorage.setItem("user_phone", this.form.phone)
 
                     this.$message({
                         type: "success",

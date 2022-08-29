@@ -1,4 +1,5 @@
 import getPageHeaders from '@/utils/getPageHeaders'
+import { fetchUserInfo } from '@/http/auth'
 import Vue from 'vue'
 
 export default {
@@ -30,6 +31,9 @@ export default {
         ],
         pageHeaders: [],
         loginVisible: false,
+        userInfo: {
+            phone: ''
+        }
     },
     getters: {
         menu: state => {
@@ -54,6 +58,9 @@ export default {
         },
         loginVisible: state => {
             return state.loginVisible
+        },
+        userphone: state => {
+            return state.userInfo.phone
         }
     },
     mutations: {
@@ -68,6 +75,9 @@ export default {
         },
         CHANGE_LOGIN_DIALOG(state, status) {
             state.loginVisible = status
+        },
+        SET_USER_PHONE(state, phone) {
+            state.userInfo.phone = phone
         }
     },
     actions: {
@@ -84,6 +94,11 @@ export default {
         },
         changeLoginDialog({ commit }, status) {
             commit('CHANGE_LOGIN_DIALOG', status)
+        },
+        getUserInfo({ commit }) {
+            return fetchUserInfo().then(res => {
+                commit('SET_USER_PHONE', res.data.telephone)
+            })
         }
     }
 }

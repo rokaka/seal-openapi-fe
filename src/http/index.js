@@ -18,6 +18,7 @@ const config = {
     responseType: 'json',
 }
 const service = axios.create(config);
+let lock = false // 避免重复提示
 
 if (process.env.NODE_ENV == 'development') {
     service.defaults.baseURL = '/api';
@@ -48,26 +49,26 @@ service.interceptors.response.use(
                 error.message = '请先登录'
             }
 
-            $message({
-                type: 'info',
-                message: error.message
-            })
-
             setTimeout(() => {
                 store.dispatch('openLoginDialog')
             }, 800)
-            return Promise.reject(error)
         } else if (error && error.response && error.response.data) {
             error.message = error.response.data.message;
         }
 
         error.message = error.message || '网络有点小问题，请稍后再试';
+        if (!lock) {
+            lock = true
+            $message({
+                message: `${error.message}`,
+                duration: 2000,
+                type: 'info',
+                onClose: () => {
+                    lock = false
+                }
+            });
+        }
 
-        $message({
-            message: `${error.message}`,
-            duration: 2000,
-            type: 'error'
-        });
         return Promise.reject(error.response || error);
     }
 );
