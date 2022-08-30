@@ -6,26 +6,18 @@ export default {
     state: {
         MENU: [
             { name: "开放平台介绍", link: "ProfileMd" },
-            { name: "签名规则", link: "RuleMd" },
-            { name: "签名工具", link: "SignToolMd" },
-            { name: "频率限制", link: "" },
-            { name: "错误代码", link: "" },
-            { name: "主要参数说明", link: "" },
-            { name: "常见问题", link: "" },
+            { name: 'APP接入说明', link: "AppAccessDescriptionMd" },
+            { name: "全局错误码", link: "ErrorCodeMd" },
+            { name: "签名规则", link: "SignToolMd" },
             {
-                name: "账号对接",
+                name: "API文档",
                 children: [
-                    { name: "注册问卷网账号", link: "ProfileMd" },
-                    { name: "获取第三方登录链接", link: "RuleMd" },
-                    { name: "获取绑定账号列表", link: "" },
-                ],
-            },
-            {
-                name: "账号对接2",
-                children: [
-                    { name: "注册问卷网账号", link: "" },
-                    { name: "获取第三方登录链接", link: "" },
-                    { name: "获取绑定账号列表", link: "" },
+                    {
+                        name: '算法', children: [
+                            { name: "数据包络", link: "DEAMd" },
+                        ]
+                    },
+
                 ],
             },
         ],
@@ -45,7 +37,13 @@ export default {
             const len = menu.length
             for (let i = 0; i < len; i++) {
                 if (menu[i].children) {
-                    flatMenu.push(...menu[i].children)
+                    for (let j = 0; j < menu[i].children.length; j++) {
+                        if (menu[i].children[j].children) {
+                            flatMenu.push(...menu[i].children[j].children)
+                        } else {
+                            flatMenu.push(menu[i].children[j])
+                        }
+                    }
                 } else {
                     flatMenu.push(menu[i])
                 }

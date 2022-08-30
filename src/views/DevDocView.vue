@@ -10,6 +10,9 @@
 import ProfileMd from "@/assets/md/profile.md"
 import SignToolMd from "@/assets/md/signTool.md"
 import RuleMd from "@/assets/md/rule.md"
+import AppAccessDescriptionMd from "@/assets/md/appAccessDesc.md"
+import DEAMd from "@/assets/md/dea.md"
+import ErrorCodeMd from "@/assets/md/errorCode.md"
 import SideNav from "./subComponents/SideNav.vue"
 import RightMenu from "./subComponents/RightMenu.vue"
 import throttle from "@/utils/throttle.js"
@@ -22,6 +25,9 @@ export default {
         RuleMd,
         RightMenu,
         SignToolMd,
+        AppAccessDescriptionMd,
+        DEAMd,
+        ErrorCodeMd,
     },
     computed: {
         ...mapGetters(["menu", "flatMenu", "pageHeaders"]),

@@ -1,4 +1,6 @@
-# 签名方法
+# 签名规则
+
+SPSSPRO 开放平台中每一个接口都遵循本签名规则。在签名时需要用到应用的 `appKey` 和 `appSecret`，如果您不清楚可以查阅相关文档先获取 `appKey` 和 `appSecret`。
 
 
 
