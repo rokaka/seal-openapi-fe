@@ -2,14 +2,16 @@ stages:
   - build
   - deploy
 
+variables:
+  IMAGE_NAME: cr.idiaoyan.cn/sp/sp-openapi-fe
+
 build-image:dev:
   stage: build
   image: cr.idiaoyan.cn/mirror/docker:19.03.12
   tags:
     - ops
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'develop'
-    - if: $CI_COMMIT_BRANCH == 'develop'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
     DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
     DOCKER_HOST: tcp://localhost:2376
@@ -23,11 +25,13 @@ build-image:dev:
   before_script:
     - echo ${DOCKER_REGISTRY_PASS} | docker login cr.idiaoyan.cn --username=${DOCKER_REGISTRY_USER} --password-stdin
   script:
-    - echo $(TZ=Asia/Shanghai date '+%Y%m%d%H%M%S') > .version
-    - IMAGE=cr.idiaoyan.cn/sp/sp-openapi-fe:`cat .version`
+    - echo ${CI_COMMIT_SHORT_SHA}-$(TZ=Asia/Shanghai date '+%Y%m%d%H%M%S') > .version
+    - IMAGE=$IMAGE_NAME:`cat .version`
     - docker build -t $IMAGE .
     - cat .version
     - docker push $IMAGE
+    - docker tag $IMAGE $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:latest
 
 deploy:uat:
   stage: deploy
