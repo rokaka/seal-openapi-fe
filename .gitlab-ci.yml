@@ -33,7 +33,7 @@ build-image:dev:
     - docker tag $IMAGE $IMAGE_NAME:latest
     - docker push $IMAGE_NAME:latest
 
-deploy:uat:
+.deploy:
   stage: deploy
   image: cr.idiaoyan.cn/ops/nodejs:14.16.0-7373a927
   tags:
@@ -44,27 +44,20 @@ deploy:uat:
     - yum install gcc-c++ -y
     - npm install --global yarn nrm
     - nrm add idiaoyan http://mirrors.idiaoyan.cn/repository/npm-group/;nrm use idiaoyan
+
+deploy:uat:
+  extends:
+    - .deploy
   script:
     - yarn install
     - yarn run build:uat
     - ossutil cp -rf dist/ oss://sp-web-uat-10001-oss/sp-openapifed -c /root/.ossutilconfig-sz
 
 deploy:prod:
-  stage: deploy
-  image: cr.idiaoyan.cn/ops/nodejs:14.16.0-7373a927
-  tags:
-    - public-prod-01
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^release.*/
-  when: manual
-  before_script:
-    - yum install gcc-c++ -y
-    - npm install --global yarn nrm
-    - nrm add idiaoyan http://mirrors.idiaoyan.cn/repository/npm-group/;nrm use idiaoyan
+  extends:
+    - .deploy
   script:
     - yarn install
     - yarn run build:prod
     - ossutil cp -rf dist/ oss://sp-web-prod-10001-oss/sp-openapifed -c /root/.ossutilconfig-sz
     
-    
-
