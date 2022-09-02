@@ -12,13 +12,13 @@
             <div class="flex items-center ml-6 h-full box-border">
                 <router-link
                     to="/console"
-                    class="w-16 box-border h-full text-center"
+                    class="box-border h-full text-center"
                     style="line-height: 64px"
                     >控制台</router-link
                 >
                 <router-link
                     to="/dev_doc"
-                    class="w-16 box-border h-full text-center ml-6"
+                    class="box-border h-full text-center ml-6"
                     style="line-height: 64px"
                     >开放文档</router-link
                 >
