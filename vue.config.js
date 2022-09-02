@@ -1,4 +1,5 @@
 const anchor = require("markdown-it-anchor")
+const path = require('path')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://openapi-dev.spsspro.com:30815',
+                target: 'http://openapi-uat.spsspro.com',
                 ws: false,
                 changeOrigin: true,
                 pathRewrite: {
@@ -23,11 +24,6 @@ module.exports = {
         plugins: [
             // new BundleAnalyzerPlugin()
         ],
-        externals: {
-            vue: 'Vue',
-            'vue-router': 'VueRouter',
-            vuex: 'Vuex',
-        }
     },
     chainWebpack(config) {
         config.module
@@ -50,22 +46,31 @@ module.exports = {
                         html: true,
                         linkify: true,
                         typography: true,
+                        notWrapper: true,
                         init(md) {
                             md.use(require("markdown-it-imsize")) // 设置图片大小
                             md.use(anchor) // 设置标题锚点
+
+
                         },
                     }
                 }
             })
             .end()
+            .use('markdownloader')
+            .loader(path.resolve(__dirname, './src/assets/loader/md-loader.js'))
+            .end()
 
         config.plugin('html')
             .tap(args => {
-                args[0].cdn = [
-                    'https://s0.spsspro.com/lib/vue/2.6.11/vue.min.js',
-                    'https://s0.spsspro.com/lib/vue-router/3.5.2/vue-router.min.js',
-                    'https://s0.spsspro.com/lib/vuex/3.6.2/vuex.min.js',
-                ]
+                if (process.env.NODE_ENV === 'production') {
+                    args[0].cdn = [
+                        'https://s0.spsspro.com/lib/vue/2.6.11/vue.min.js',
+                        'https://s0.spsspro.com/lib/vue-router/3.5.2/vue-router.min.js',
+                        'https://s0.spsspro.com/lib/vuex/3.6.2/vuex.min.js',
+                    ]
+                }
+
                 args[0].title = 'API开放平台-SPSSPRO-免费专业的在线数据分析平台'
                 args[0].meta = {
                     description: 'SPSSPRO API开放平台是关于数据分析工具软件的API开发接口介绍,介绍了各种接口的使用与权限。',
@@ -73,5 +78,12 @@ module.exports = {
                 }
                 return args
             })
+        if (process.env.NODE_ENV === 'production') {
+            config.externals({
+                vue: 'Vue',
+                'vue-router': 'VueRouter',
+                vuex: 'Vuex',
+            })
+        }
     }
 }

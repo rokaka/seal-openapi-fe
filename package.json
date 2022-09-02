@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.17",
+    "@vue/babel-preset-jsx": "^1.4.0",
     "@vue/cli-plugin-babel": "~4.5.10",
     "@vue/cli-plugin-eslint": "~4.5.10",
     "@vue/cli-plugin-router": "~4.5.10",
@@ -36,6 +37,7 @@
     "sass-loader": "10.x",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue-dotmd-loader": "^0.2.2",
+    "vue-fragment": "^1.6.0",
     "vue-template-compiler": "^2.6.11",
     "webpack-bundle-analyzer": "^4.5.0"
   },

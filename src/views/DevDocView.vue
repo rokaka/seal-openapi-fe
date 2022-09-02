@@ -9,7 +9,6 @@
 <script>
 import ProfileMd from "@/assets/md/profile.md"
 import SignToolMd from "@/assets/md/signTool.md"
-import RuleMd from "@/assets/md/rule.md"
 import AppAccessDescriptionMd from "@/assets/md/appAccessDesc.md"
 import DEAMd from "@/assets/md/dea.md"
 import ErrorCodeMd from "@/assets/md/errorCode.md"
@@ -22,7 +21,6 @@ export default {
     components: {
         ProfileMd,
         SideNav,
-        RuleMd,
         RightMenu,
         SignToolMd,
         AppAccessDescriptionMd,
