@@ -41,7 +41,7 @@ service.interceptors.response.use(
         return data;
     },
     (error) => {
-        if (error.response.status == 401 && error.response.data.code === 10002) {
+        if (error.response.status == 401 && error.response.data.code == 10002) {
             if (localStorage.getItem('auth_token')) {
                 error.message = '登录已过期，请重新登录'
                 localStorage.removeItem('auth_token')
