@@ -17,7 +17,7 @@ export default {
                             {
                                 name: '数据分析', children: [
                                     { name: "数据包络", link: "DEAMd" },
-                                    { name: "信度分析", link: "ReliabilityAnalysisMd" },
+                                    { name: "信度分析-Cronbach's α", link: "ReliabilityAnalysisMd" },
                                     { name: "信度分析-折半系数", link: "ReliabilityAnalysisHalfCoefficientMd" },
                                     { name: "效度分析", link: "validityAnalysisMd" }
                                 ]
