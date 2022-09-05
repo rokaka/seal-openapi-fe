@@ -40,6 +40,7 @@ build-image:dev:
     - public-prod-01
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^release.*/
+  when: manual
   before_script:
     - yum install gcc-c++ -y
     - npm install --global yarn nrm
