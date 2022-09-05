@@ -10,15 +10,16 @@ export default {
         const tableEle = (data, depth = 1) => {
             return (
                 <fragment>
-                    {Object.keys(data.properties).map(k => {
-                        const item = data.properties[k]
-                        const required = data.required
+                    {Object.keys(data.properties || data.items.properties).map(k => {
+                        const item = data.properties ? data.properties[k] : data.items.properties[k]
+                        const hasChild = item.properties || (item.items && item.items.properties) //只有object类型或object Array类型的参数可以展开
+                        const required = data.required || data.items.required
                         return (
                             <fragment>
                                 <tr>
-                                    <td class={{ "more-td": item.properties }}>
+                                    <td>
                                         <div style={{ marginLeft: depth * 20 + 'px', position: 'relative' }}>
-                                            {item.properties && (
+                                            {hasChild && (
                                                 <div
                                                     class="show-more"
                                                     onClick={() => {
@@ -44,7 +45,7 @@ export default {
                                             {k}
                                         </div>
                                     </td>
-                                    <td>{item.type}</td>
+                                    <td>{item.type === 'array' ? `${item.items.type} []` : item.type}</td>
                                     <td>
                                         {required && required.includes(k)
                                             ? "是"
@@ -52,7 +53,7 @@ export default {
                                     </td>
                                     <td>{item.description}</td>
                                 </tr>
-                                {item.properties && item.open ? tableEle(item, depth + 1) : ''}
+                                {hasChild && item.open ? tableEle(item, depth + 1) : ''}
                             </fragment>
                         )
                     })

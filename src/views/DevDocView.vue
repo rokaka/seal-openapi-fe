@@ -10,8 +10,12 @@
 import ProfileMd from "@/assets/md/profile.md"
 import SignToolMd from "@/assets/md/signTool.md"
 import AppAccessDescriptionMd from "@/assets/md/appAccessDesc.md"
+import ReliabilityAnalysisMd from "@/assets/md/reliabilityAnalysis.md"
+import ReliabilityAnalysisHalfCoefficientMd from "@/assets/md/reliabilityAnalysisHalfCoefficient.md"
+import validityAnalysisMd from "@/assets/md/validityAnalysis.md"
 import DEAMd from "@/assets/md/dea.md"
 import ErrorCodeMd from "@/assets/md/errorCode.md"
+import DataFrameSeriesMd from "@/assets/md/DataFrame-Series.md"
 import SideNav from "./subComponents/SideNav.vue"
 import RightMenu from "./subComponents/RightMenu.vue"
 import throttle from "@/utils/throttle.js"
@@ -23,9 +27,13 @@ export default {
         SideNav,
         RightMenu,
         SignToolMd,
+        ReliabilityAnalysisMd,
         AppAccessDescriptionMd,
+        ReliabilityAnalysisHalfCoefficientMd,
+        validityAnalysisMd,
         DEAMd,
         ErrorCodeMd,
+        DataFrameSeriesMd,
     },
     computed: {
         ...mapGetters(["menu", "flatMenu", "pageHeaders"]),

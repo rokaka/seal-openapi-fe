@@ -50,8 +50,6 @@ module.exports = {
                         init(md) {
                             md.use(require("markdown-it-imsize")) // 设置图片大小
                             md.use(anchor) // 设置标题锚点
-
-
                         },
                     }
                 }
