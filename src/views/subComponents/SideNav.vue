@@ -65,6 +65,7 @@
                                         grandMenuItem, grandIndex
                                     ) in subMenuItem.children"
                                     :key="`${subIndex}-${grandIndex}`"
+                                    class="mt-2"
                                     :class="{
                                         'text-blue':
                                             grandMenuItem.name ===
@@ -72,7 +73,53 @@
                                     }"
                                     @click="show(grandMenuItem)"
                                 >
-                                    {{ grandMenuItem.name }}
+                                    <template v-if="grandMenuItem.children">
+                                        <span
+                                            class="relative"
+                                            @click="
+                                                openGrandSubItem(
+                                                    grandMenuItem.name
+                                                )
+                                            "
+                                        >
+                                            <i
+                                                class="wj-icon-caret-bottom absolute top-1/2 transform -translate-y-1/2 -left-5"
+                                                :class="{
+                                                    '-rotate-90':
+                                                        openGrandSubItemName !==
+                                                        grandMenuItem.name, // 展开的三级菜单名称
+                                                }"
+                                            ></i>
+                                            {{ grandMenuItem.name }}
+                                        </span>
+                                        <ul
+                                            class="ml-3 mt-2"
+                                            :class="{
+                                                hidden:
+                                                    openGrandSubItemName !==
+                                                    grandMenuItem.name,
+                                            }"
+                                        >
+                                            <li
+                                                v-for="(
+                                                    grandMenuItem, grandIndex
+                                                ) in grandMenuItem.children"
+                                                :key="`${subIndex}-${grandIndex}`"
+                                                class="mt-2"
+                                                :class="{
+                                                    'text-blue':
+                                                        grandMenuItem.name ===
+                                                        $route.params.docName,
+                                                }"
+                                                @click="show(grandMenuItem)"
+                                            >
+                                                {{ grandMenuItem.name }}
+                                            </li>
+                                        </ul>
+                                    </template>
+                                    <span v-else>
+                                        {{ grandMenuItem.name }}</span
+                                    >
                                 </li>
                             </ul>
                         </template>
@@ -86,12 +133,14 @@
 </template>
 
 <script>
+// TODO: 后面可以改为递归渲染的组件
 import { mapGetters } from "vuex"
 export default {
     data() {
         return {
             openSubItemName: "", //开启的二级菜单
             openGrandItemName: "", // 开启的三级菜单
+            openGrandSubItemName: "", // 开启的四级菜单
         }
     },
     computed: {
@@ -114,6 +163,10 @@ export default {
         },
         openGrandItem(name) {
             this.openGrandItemName = this.openGrandItemName === name ? "" : name
+        },
+        openGrandSubItem(name) {
+            this.openGrandSubItemName =
+                this.openGrandSubItemName === name ? "" : name
         },
     },
 }

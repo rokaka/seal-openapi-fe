@@ -13,8 +13,18 @@ export default {
                 name: "API文档",
                 children: [
                     {
-                        name: '算法', children: [
-                            { name: "数据包络", link: "DEAMd" },
+                        name: '算法平台', children: [
+                            {
+                                name: '数据分析', children: [
+                                    { name: "数据包络", link: "DEAMd" },
+                                    { name: "信度分析", link: "ReliabilityAnalysisMd" },
+                                    { name: "信度分析-折半系数", link: "ReliabilityAnalysisHalfCoefficientMd" },
+                                    { name: "效度分析", link: "validityAnalysisMd" }
+                                ]
+                            },
+                            {
+                                name: 'DataFrame与Series', link: "DataFrameSeriesMd"
+                            }
                         ]
                     },
 
@@ -33,22 +43,20 @@ export default {
         },
         flatMenu: state => {
             const menu = state.MENU
-            const flatMenu = []
-            const len = menu.length
-            for (let i = 0; i < len; i++) {
-                if (menu[i].children) {
-                    for (let j = 0; j < menu[i].children.length; j++) {
-                        if (menu[i].children[j].children) {
-                            flatMenu.push(...menu[i].children[j].children)
-                        } else {
-                            flatMenu.push(menu[i].children[j])
-                        }
-                    }
-                } else {
-                    flatMenu.push(menu[i])
-                }
-            }
 
+            function PUSH_ITEM(data) {
+                let res = []
+                for (let item of data) {
+                    if (!item.children) {
+                        res.push(item)
+                    } else {
+                        let temp = PUSH_ITEM(item.children)
+                        res = res.concat(temp)
+                    }
+                }
+                return res
+            }
+            const flatMenu = PUSH_ITEM(menu)
             return flatMenu
         },
         pageHeaders: state => {

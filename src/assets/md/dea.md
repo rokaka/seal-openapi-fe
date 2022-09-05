@@ -4,7 +4,7 @@
 
 ## 请求方法与路径
 
-+ 请求方法：POST
++ 请求方法：`POST`
 + 请求路径：`/api/algorithm/v1/analysis/quantify/dea`
 
 
