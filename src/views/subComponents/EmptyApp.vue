@@ -34,6 +34,8 @@
                         placeholder="请输入"
                         v-model="newAppForm.appName"
                         maxlength="30"
+                        show-word-limit
+                        class="input-wrapper"
                     ></wj-input>
                 </wj-form-item>
             </wj-form>
@@ -101,3 +103,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+::v-deep.input-wrapper input {
+    padding-right: 50px;
+}
+</style>
