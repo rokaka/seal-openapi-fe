@@ -102,6 +102,7 @@
             custom-class="rename-dialog"
             title="重命名"
             :visible.sync="visible"
+            @open="beforeRename"
             width="420px"
         >
             <wj-form
@@ -232,7 +233,7 @@ export default {
                 })
 
                 this.algorithmQuotaList = res.data
-                this.quotaTotal = res.total
+                this.quotaTotal = +res.total
             } finally {
                 this.loading = false
             }
@@ -263,6 +264,9 @@ export default {
                     message: "复制失败，[" + e.action + "]",
                 })
             })
+        },
+        beforeRename() {
+            this.renameForm.newName = this.appDetail.app_name
         },
     },
     components: {
