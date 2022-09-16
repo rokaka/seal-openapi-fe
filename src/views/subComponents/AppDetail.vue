@@ -40,17 +40,13 @@
         </div>
         <h2 class="text-2xl font-bold mb-4 pt-8">版本权限</h2>
         <div class="text-sm text-text-gray">
-            <div class="mb-2">
-                当前版本：{{ VERSION_DICE[appDetail.edition] }}
-            </div>
+            <div class="mb-2">当前版本：{{ VERSION_DICE[appDetail.edition] }}</div>
 
             <div class="mb-2">
                 单日成功调用分析次数：{{ calls_today || 0 }} /
                 {{ max_calls_per_day || 0 }}
             </div>
-            <div class="mb-2">
-                到期时间：{{ appDetail.edition_expire_at || "-" }}
-            </div>
+            <div class="mb-2">到期时间：{{ appDetail.edition_expire_at || '-' }}</div>
         </div>
 
         <p class="flex items-center justify-between text-sm text-text-gray">
@@ -82,14 +78,10 @@
                 :filter-multiple="false"
             >
             </wj-table-column>
-            <wj-table-column prop="algorithm_name" label="算法名称">
-            </wj-table-column>
-            <wj-table-column prop="max_rows" label="限制样本数">
-            </wj-table-column>
-            <wj-table-column prop="max_columns" label="限制列数">
-            </wj-table-column>
-            <wj-table-column prop="cost" label="单次调用费用">
-            </wj-table-column>
+            <wj-table-column prop="algorithm_name" label="算法名称"> </wj-table-column>
+            <wj-table-column prop="max_rows" label="限制样本数"> </wj-table-column>
+            <wj-table-column prop="max_columns" label="限制列数"> </wj-table-column>
+            <wj-table-column prop="cost" label="单次调用费用"> </wj-table-column>
         </wj-table>
         <wj-pagination
             :total="quotaTotal"
@@ -105,11 +97,7 @@
             @open="beforeRename"
             width="420px"
         >
-            <wj-form
-                @submit.native.prevent
-                ref="renameForm"
-                :model="renameForm"
-            >
+            <wj-form @submit.native.prevent ref="renameForm" :model="renameForm">
                 <wj-form-item
                     prop="newName"
                     :rules="[
@@ -134,30 +122,15 @@
 
             <span slot="footer" class="dialog-footer">
                 <wj-button @click="visible = false">取 消</wj-button>
-                <wj-button type="primary" class="bg-blue" @click="rename"
-                    >确 定</wj-button
-                >
+                <wj-button type="primary" class="bg-blue" @click="rename">确 定</wj-button>
             </span>
         </wj-dialog>
     </div>
 </template>
 <script>
-import {
-    Dialog,
-    Button,
-    Input,
-    Form,
-    FormItem,
-    Table,
-    TableColumn,
-    Pagination,
-} from "@wenjuan/ui"
-import Clipboard from "clipboard"
-import {
-    renameApp,
-    fetchAlgorithmUsage,
-    fetchAlgorithmQuotao,
-} from "@/http/app"
+import { Dialog, Button, Input, Form, FormItem, Table, TableColumn, Pagination } from '@wenjuan/ui';
+import Clipboard from 'clipboard';
+import { renameApp, fetchAlgorithmUsage, fetchAlgorithmQuotao } from '@/http/app';
 
 function data() {
     return {
@@ -166,118 +139,118 @@ function data() {
             newName: this.appDetail.app_name,
         },
         clip: null,
-        calls_today: "",
-        max_calls_per_day: "",
+        calls_today: '',
+        max_calls_per_day: '',
         filters: [
-            { text: "数据处理", value: "数据处理" },
-            { text: "数据分析", value: "数据分析" },
-            { text: "业务BI模型", value: "业务BI模型" },
+            { text: '数据处理', value: '数据处理' },
+            { text: '数据分析', value: '数据分析' },
+            { text: '业务BI模型', value: '业务BI模型' },
         ],
         algorithmQuotaList: [],
-        filterType: "",
-        filterName: "",
+        filterType: '',
+        filterName: '',
         quotaTotal: 0,
         loading: false,
         VERSION_DICE: {
-            NORMAL: "免费版",
-            ULTIMATE: "旗舰版",
-            SPECIAL: "特供版",
+            NORMAL: '免费版',
+            ULTIMATE: '旗舰版',
+            SPECIAL: '特供版',
         },
-    }
+    };
 }
 
 export default {
-    props: ["appDetail"],
+    props: ['appDetail'],
     data,
     mounted() {
-        this.initCopy() // 初始化copy
-        this.getUsage() // 获取每日限额和用量
-        this.getQuota() // 获取算法配额
+        this.initCopy(); // 初始化copy
+        this.getUsage(); // 获取每日限额和用量
+        this.getQuota(); // 获取算法配额
     },
     beforeDestroy() {
-        this.clip.destroy() // 销毁copy示例
+        this.clip.destroy(); // 销毁copy示例
     },
     methods: {
         validateAppName(rule, value, callback) {
             if (/^[\u4E00-\u9FA5,a-zA-Z]+$/g.test(value)) {
-                callback()
+                callback();
             } else {
-                callback(new Error("只允许填入中英文"))
+                callback(new Error('只允许填入中英文'));
             }
         },
         filterChange(val) {
-            this.filterType = val.algorithm_type[0]
-            this.getQuota(1, this.filterType, this.filterName)
+            this.filterType = val.algorithm_type[0];
+            this.getQuota(1, this.filterType, this.filterName);
         },
         async getUsage() {
-            const { app_id } = this.appDetail
+            const { app_id } = this.appDetail;
 
             const {
                 data: { calls_today, max_calls_per_day },
-            } = await fetchAlgorithmUsage(app_id)
+            } = await fetchAlgorithmUsage(app_id);
 
-            this.calls_today = calls_today
-            this.max_calls_per_day = max_calls_per_day
+            this.calls_today = calls_today;
+            this.max_calls_per_day = max_calls_per_day;
         },
-        async getQuota(pageNum = 1, algorithm_type = "", algorithm_name = "") {
-            if (this.isloading) return
-            this.loading = true
+        async getQuota(pageNum = 1, algorithm_type = '', algorithm_name = '') {
+            if (this.isloading) return;
+            this.loading = true;
 
-            const { app_id } = this.appDetail
+            const { app_id } = this.appDetail;
             try {
                 const res = await fetchAlgorithmQuotao(app_id, {
                     size: 10,
                     current: pageNum - 1, //the current is base on 0
                     algorithm_type,
                     algorithm_name,
-                })
+                });
 
-                this.algorithmQuotaList = res.data
-                this.quotaTotal = +res.total
+                this.algorithmQuotaList = res.data;
+                this.quotaTotal = +res.total;
             } finally {
-                this.loading = false
+                this.loading = false;
             }
         },
         rename() {
-            this.$refs["renameForm"].validate(async valid => {
+            this.$refs['renameForm'].validate(async (valid) => {
                 if (valid) {
-                    const { app_id } = this.appDetail
-                    const { newName } = this.renameForm
-                    await renameApp(app_id, newName)
-                    this.$emit("refresh")
-                    this.visible = false
+                    const { app_id } = this.appDetail;
+                    const { newName } = this.renameForm;
+                    await renameApp(app_id, newName);
+                    this.$emit('refresh');
+                    this.visible = false;
                 }
-            })
+            });
         },
         initCopy() {
-            this.clip = new Clipboard(".wj-icon-copy-document")
-            this.clip.on("success", () => {
+            this.clip = new Clipboard('.wj-icon-copy-document');
+            this.clip.on('success', () => {
                 this.$message({
-                    type: "success",
-                    message: "内容已复制到剪贴板",
-                })
-            })
+                    type: 'success',
+                    message: '内容已复制到剪贴板',
+                });
+            });
 
-            this.clip.on("error", e => {
+            this.clip.on('error', (e) => {
                 this.$message({
-                    type: "error",
-                    message: "复制失败，[" + e.action + "]",
-                })
-            })
+                    type: 'error',
+                    message: '复制失败，[' + e.action + ']',
+                });
+            });
         },
         beforeRename() {
-            this.renameForm.newName = this.appDetail.app_name
+            this.renameForm.newName = this.appDetail.app_name;
         },
     },
     components: {
-        "wj-button": Button,
-        "wj-dialog": Dialog,
-        "wj-input": Input,
-        "wj-form": Form,
-        "wj-form-item": FormItem,
-        "wj-table": Table,
-        "wj-table-column": TableColumn,
-        "wj-pagination": Pagination,
+        'wj-button': Button,
+        'wj-dialog': Dialog,
+        'wj-input': Input,
+        'wj-form': Form,
+        'wj-form-item': FormItem,
+        'wj-table': Table,
+        'wj-table-column': TableColumn,
+        'wj-pagination': Pagination,
     },
-}
+};
 </script>
