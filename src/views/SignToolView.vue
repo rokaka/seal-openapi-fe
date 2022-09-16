@@ -59,6 +59,36 @@ import { Button, Input, Select, Option } from '@wenjuan/ui';
 import CryptoJS from 'crypto-js/crypto-js';
 
 export default {
+    data() {
+        return {
+            signToolVisible: false,
+            formData: {
+                appSecret: '',
+                option: 'GET',
+                path: '',
+                body: '',
+            },
+            signName: '', //签名后生成的字符串
+            methodArr: [
+                {
+                    value: 'GET',
+                    label: 'GET',
+                },
+                {
+                    value: 'POST',
+                    label: 'POST',
+                },
+                {
+                    value: 'PUT',
+                    label: 'PUT',
+                },
+                {
+                    value: 'DELETE',
+                    label: 'DELETE',
+                },
+            ],
+        };
+    },
     components: {
         'wj-button': Button,
         'wj-input': Input,
@@ -93,6 +123,20 @@ export default {
         },
         //   生成签名
         generateSignature() {
+            if (this.formData.appSecret === '') {
+                this.$message({
+                    type: 'info',
+                    message: 'AppSecret不能为空',
+                });
+                return;
+            }
+            if (this.formData.path === '') {
+                this.$message({
+                    type: 'info',
+                    message: '请求路径不能为空',
+                });
+                return;
+            }
             let queryStr = this.formData.path;
 
             let pathStr = '';
@@ -140,36 +184,6 @@ export default {
         showSignTool() {
             this.signToolVisible = true;
         },
-    },
-    data() {
-        return {
-            signToolVisible: false,
-            formData: {
-                appSecret: '',
-                option: 'GET',
-                path: '',
-                body: '',
-            },
-            signName: '', //签名后生成的字符串
-            methodArr: [
-                {
-                    value: 'GET',
-                    label: 'GET',
-                },
-                {
-                    value: 'POST',
-                    label: 'POST',
-                },
-                {
-                    value: 'PUT',
-                    label: 'PUT',
-                },
-                {
-                    value: 'DELETE',
-                    label: 'DELETE',
-                },
-            ],
-        };
     },
 };
 </script>
