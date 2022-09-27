@@ -8,7 +8,7 @@ SPSSPRO 开放平台中每一个接口都遵循本签名规则。在签名时需
 2. 将 `RequestMethod（大写）`、`RequestPath`、`sortedQueryString`、`RequestBody` 使用换行符 `\n` 进行拼接得到 `signingString`
 3. 使用应用的 `appSecret` 对 `singingString` 进行 `hmac sha256` 签名得到 `signature`
 4. 以 "`appKey`<空格>`signature`" 的格式拼接得到认证头部 `authorization`
-5. 在后续的 api 请求时，以 key 为 `Authorization`，value 为上一步的 `authroiztaion` 的组合加入到请求头里
+5. 在后续的 API 请求时，以 key 为 `Authorization`，value 为上一步的 `authroiztaion` 的组合加入到请求头里
 
 注意：
 
@@ -17,7 +17,7 @@ SPSSPRO 开放平台中每一个接口都遵循本签名规则。在签名时需
 
 ### 例子
 
-现在有一个 api 请求如下：
+现在有一个 API 请求如下：
 
 ```http
 POST /api/v1/example?key2=value2&key1=value1&key3=

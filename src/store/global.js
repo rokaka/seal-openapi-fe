@@ -6,7 +6,7 @@ export default {
     state: {
         MENU: [
             { name: '开放平台介绍', link: 'ProfileMd' },
-            { name: 'APP接入说明', link: 'AppAccessDescriptionMd' },
+            { name: '应用接入说明', link: 'AppAccessDescriptionMd' },
             { name: '全局错误码', link: 'ErrorCodeMd' },
             { name: '签名规则', link: 'SignToolMd' },
             {
